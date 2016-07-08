@@ -3,22 +3,25 @@ const fs = require('fs');
 
 const server = net.createServer((socket)=>{
   socket.on('data', (data)=>{
+
     data = data.toString();
-    console.log(data);
-    let endOfRequestURI = data.indexOf(' ', 4); //12
-    let requestURI = data.slice(4, endOfRequestURI); // /surfing
-    console.log(requestURI);
-    fs.readFile('.'+requestURI, (err, data)=>{
+    let endOfRequestURI = data.indexOf(' ', 4);
+    let requestURI = data.slice(4, endOfRequestURI);
+
+    fs.readFile('.'+ requestURI, (err, data) => {
       if(err){
-        throw err;
+        throw err; //body = 404 error page????
       }else{
         let body = data.toString();
-        console.log(body);
+        let output =
+          `HTTP/1.1 200 OK
+          content-length: ${body.length}
+
+          ${body}`;
+        socket.write(output);
       }
     });
-
   });
-
 });
 
 server.listen('8080', () =>{
