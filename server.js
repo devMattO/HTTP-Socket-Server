@@ -18,7 +18,7 @@ const server = net.createServer((socket)=>{
 
             ${body}`;
           socket.write(output);
-          // socket.end();
+          socket.end();
         });
 
       }else{
@@ -29,39 +29,10 @@ const server = net.createServer((socket)=>{
 
           ${body}`;
         socket.write(output);
-        fs.readFile('css/styles.css', (err, data) => {
-          if (err) {
-            fs.readFile('./404.html', (err, data) => {
-              let body = data.toString();
-              let output =
-                `HTTP/1.0 404 NotFound
-                content-length: ${body.length}
-
-                ${body}`;
-              socket.write(output);
-              // socket.end();
-            });
-
-          }else{
-            let body = data.toString();
-            let output =
-              `HTTP/1.1 200 OK
-              Content-Length: ${body.length}
-              Content-Type: text/css;
-
-              ${body}`;
-            socket.write(output);
-            socket.end();
-
-          }
-
-        });
-        // socket.end();
+        socket.end();
         // end connection and console log to server that client received data etc..
       }
     });
-
-
   });
 });
 
